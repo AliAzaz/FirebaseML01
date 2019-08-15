@@ -10,6 +10,9 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import com.abcd.firebasemlkt01.presenter.MainPresenter
 import com.abcd.firebasemlkt01.view.MainView
+import com.google.firebase.ml.vision.FirebaseVision
+import com.google.firebase.ml.vision.common.FirebaseVisionImage
+import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
 import com.nabinbhandari.android.permissions.PermissionHandler
 import com.nabinbhandari.android.permissions.Permissions
 import kotlinx.android.synthetic.main.activity_main.*
@@ -34,6 +37,23 @@ class MainActivity : AppCompatActivity(), MainView.UIView {
 
     override fun settingBitmap(bitmap: Bitmap?) {
         capturedImage.setImageBitmap(bitmap)
+
+        if (bitmap == null) {
+            imgTxtView.text = "Not Found!!"
+            return
+        }
+
+        val fbVisionImg: FirebaseVisionImage = FirebaseVisionImage.fromBitmap(bitmap)
+        var fbVisionTxtDetect: FirebaseVisionTextRecognizer = FirebaseVision.getInstance().onDeviceTextRecognizer
+        fbVisionTxtDetect.processImage(fbVisionImg)
+            .addOnSuccessListener {
+                imgTxtView.text = it.text
+            }
+            .addOnFailureListener {
+                imgTxtView.text = "Not Found!!"
+                it.printStackTrace()
+            }
+
     }
 
     private fun settingPermissions() {
