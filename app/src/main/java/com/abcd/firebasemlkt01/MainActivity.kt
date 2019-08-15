@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(), MainView.UIView {
 
     lateinit var presenter: MainPresenter
-    val CAMERA_REQUEST: Int = 1001
+    private val CAMERA_REQUEST: Int = 1001
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,22 +26,23 @@ class MainActivity : AppCompatActivity(), MainView.UIView {
 
         //Initialize Presenter
         presenter = MainPresenter(this@MainActivity)
-
+        //Calling Permission
+        settingPermissions()
         //Setting Listeners
         settingListeners()
     }
 
-    override fun settingPermissions() {
+    override fun settingBitmap(bitmap: Bitmap?) {
+        capturedImage.setImageBitmap(bitmap)
+    }
+
+    private fun settingPermissions() {
         val permissions = arrayOf(permission.CAMERA, permission.WRITE_EXTERNAL_STORAGE)
         Permissions.check(this/*context*/, permissions, null/*options*/, null, object : PermissionHandler() {
             override fun onGranted() {
                 presenter.onGettingPermissions(true)
             }
         })
-    }
-
-    override fun settingBitmap(bitmap: Bitmap?) {
-        capturedImage.setImageBitmap(bitmap)
     }
 
     private fun settingListeners() {
@@ -56,7 +57,7 @@ class MainActivity : AppCompatActivity(), MainView.UIView {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode != CAMERA_REQUEST && resultCode != Activity.RESULT_OK) return
-        val imageBitmap = data?.extras?.get("data") as Bitmap
+        val imageBitmap = data?.extras?.get("data") as? Bitmap
         presenter.onGettingBitmap(imageBitmap)
     }
 }

@@ -6,10 +6,10 @@ import com.abcd.firebasemlkt01.view.MainView
 
 class MainPresenter(private val mainActivity: MainActivity) : MainView.PresenterView {
 
-    var permissionFlag: Boolean = false
+    var permissionFlag: Boolean
 
     init {
-        mainActivity.settingPermissions()
+        permissionFlag = false
     }
 
     override fun onGettingPermissions(flag: Boolean) {

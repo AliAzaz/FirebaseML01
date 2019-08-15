@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 interface MainView {
 
     interface UIView {
-        fun settingPermissions()
 
         fun settingBitmap(bitmap: Bitmap?)
     }
