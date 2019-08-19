@@ -1,4 +1,4 @@
-package com.abcd.firebasemlkt01
+package com.abcd.firebasemlkt01.ui
 
 import android.Manifest.permission
 import android.app.Activity
@@ -8,8 +8,10 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
-import com.abcd.firebasemlkt01.presenter.MainPresenter
-import com.abcd.firebasemlkt01.view.MainView
+import com.abcd.firebasemlkt01.R
+import com.abcd.firebasemlkt01.ui.presenter.MainPresenter
+import com.abcd.firebasemlkt01.ui.view.MainView
+import com.abcd.firebasemlkt01.utils.presenter.MyPDPresenter
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
@@ -23,12 +25,15 @@ class MainActivity : AppCompatActivity(), MainView.UIView {
     lateinit var presenter: MainPresenter
     private val CAMERA_REQUEST: Int = 1001
 
+    lateinit var progressPresenter: MyPDPresenter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         //Initialize Presenter
         presenter = MainPresenter(this@MainActivity)
+        progressPresenter = MyPDPresenter(this@MainActivity)
         //Calling Permission
         settingPermissions()
         //Setting Listeners
@@ -36,23 +41,37 @@ class MainActivity : AppCompatActivity(), MainView.UIView {
     }
 
     override fun settingBitmap(bitmap: Bitmap?) {
-        capturedImage.setImageBitmap(bitmap)
-
         if (bitmap == null) {
-            imgTxtView.text = "Not Found!!"
+            presenter.onGettingExtractTextFRImage("Not Found!!")
             return
         }
+
+        capturedImage.setImageBitmap(bitmap)
+        presenter.onGettingFirebaseVisionImage(bitmap)
+    }
+
+    override fun settingExtractTextFRImage(imageTxt: String) {
+        imgTxtView.text = imageTxt
+
+        progressPresenter.dismissDialog()
+    }
+
+    override fun settingFirebaseVisionImage(bitmap: Bitmap) {
+
+        progressPresenter.showDialog()
 
         val fbVisionImg: FirebaseVisionImage = FirebaseVisionImage.fromBitmap(bitmap)
         var fbVisionTxtDetect: FirebaseVisionTextRecognizer = FirebaseVision.getInstance().onDeviceTextRecognizer
         fbVisionTxtDetect.processImage(fbVisionImg)
             .addOnSuccessListener {
-                imgTxtView.text = it.text
+                presenter.onGettingExtractTextFRImage(if (it.equals("")) "No Found any text!!" else it.text)
             }
             .addOnFailureListener {
-                imgTxtView.text = "Not Found!!"
-                it.printStackTrace()
+                //                presenter.onGettingExtractTextFRImage("Error: " + it.printStackTrace())
+
+                settingFirebaseVisionImage(bitmap)
             }
+
 
     }
 

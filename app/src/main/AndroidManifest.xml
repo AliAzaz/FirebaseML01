@@ -18,7 +18,7 @@
 				android:value="ocr"/>
 		<!-- To use multiple models: android:value="ocr,model2,model3" -->
 	
-		<activity android:name=".MainActivity">
+		<activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

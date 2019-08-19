@@ -1,4 +1,4 @@
-package com.abcd.firebasemlkt01.view
+package com.abcd.firebasemlkt01.ui.view
 
 import android.graphics.Bitmap
 
@@ -7,6 +7,10 @@ interface MainView {
     interface UIView {
 
         fun settingBitmap(bitmap: Bitmap?)
+
+        fun settingExtractTextFRImage(imageTxt: String = "")
+
+        fun settingFirebaseVisionImage(bitmap: Bitmap)
     }
 
     interface PresenterView {
@@ -15,5 +19,9 @@ interface MainView {
         fun grantPermission(): Boolean
 
         fun onGettingBitmap(bitmap: Bitmap?)
+
+        fun onGettingExtractTextFRImage(imageTxt: String)
+
+        fun onGettingFirebaseVisionImage(bitmap: Bitmap)
     }
 }

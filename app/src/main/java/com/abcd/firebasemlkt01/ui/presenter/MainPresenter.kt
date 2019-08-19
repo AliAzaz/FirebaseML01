@@ -1,8 +1,8 @@
-package com.abcd.firebasemlkt01.presenter
+package com.abcd.firebasemlkt01.ui.presenter
 
 import android.graphics.Bitmap
-import com.abcd.firebasemlkt01.MainActivity
-import com.abcd.firebasemlkt01.view.MainView
+import com.abcd.firebasemlkt01.ui.MainActivity
+import com.abcd.firebasemlkt01.ui.view.MainView
 
 class MainPresenter(private val mainActivity: MainActivity) : MainView.PresenterView {
 
@@ -22,5 +22,13 @@ class MainPresenter(private val mainActivity: MainActivity) : MainView.Presenter
 
     override fun onGettingBitmap(bitmap: Bitmap?) {
         mainActivity.settingBitmap(bitmap)
+    }
+
+    override fun onGettingExtractTextFRImage(imageTxt: String) {
+        mainActivity.settingExtractTextFRImage(imageTxt)
+    }
+
+    override fun onGettingFirebaseVisionImage(bitmap: Bitmap) {
+        mainActivity.settingFirebaseVisionImage(bitmap)
     }
 }
