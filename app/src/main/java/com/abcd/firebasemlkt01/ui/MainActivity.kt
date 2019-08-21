@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity(), MainView.UIView {
 
         //Initialize Presenter
         presenter = MainPresenter(this@MainActivity)
+        //Initialize Progress Presenter
         progressPresenter = MyPDPresenter(this@MainActivity)
         //Calling Permission
         settingPermissions()
