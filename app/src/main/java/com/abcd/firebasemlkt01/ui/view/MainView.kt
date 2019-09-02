@@ -24,4 +24,6 @@ interface MainView {
 
         fun onGettingFirebaseVisionImage(bitmap: Bitmap)
     }
+
+    interface ModelView
 }

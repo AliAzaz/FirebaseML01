@@ -47,6 +47,8 @@ class MainActivity : AppCompatActivity(), MainView.UIView {
             return
         }
 
+        progressPresenter.settingDialog(true)
+
         capturedImage.setImageBitmap(bitmap)
         presenter.onGettingFirebaseVisionImage(bitmap)
     }
@@ -54,12 +56,10 @@ class MainActivity : AppCompatActivity(), MainView.UIView {
     override fun settingExtractTextFRImage(imageTxt: String) {
         imgTxtView.text = imageTxt
 
-        progressPresenter.dismissDialog()
+        progressPresenter.settingDialog(false)
     }
 
     override fun settingFirebaseVisionImage(bitmap: Bitmap) {
-
-        progressPresenter.showDialog()
 
         val fbVisionImg: FirebaseVisionImage = FirebaseVisionImage.fromBitmap(bitmap)
         var fbVisionTxtDetect: FirebaseVisionTextRecognizer = FirebaseVision.getInstance().onDeviceTextRecognizer
@@ -68,9 +68,14 @@ class MainActivity : AppCompatActivity(), MainView.UIView {
                 presenter.onGettingExtractTextFRImage(if (it.equals("")) "No Found any text!!" else it.text)
             }
             .addOnFailureListener {
-                //                presenter.onGettingExtractTextFRImage("Error: " + it.printStackTrace())
+                when {
+                    it.printStackTrace().equals("Waiting for the text recognition model to be downloaded. Please wait.") ->
+                        settingFirebaseVisionImage(
+                            bitmap
+                        )
+                    else -> presenter.onGettingExtractTextFRImage("Error: " + it.printStackTrace())
+                }
 
-                settingFirebaseVisionImage(bitmap)
             }
 
 

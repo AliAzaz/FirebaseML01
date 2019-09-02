@@ -38,7 +38,6 @@ dependencies {
 
     //Permissions
     implementation 'com.nabinbhandari.android:permissions:3.8'
-
     //Firebase
     implementation 'com.google.firebase:firebase-ml-vision:18.0.1'
 }

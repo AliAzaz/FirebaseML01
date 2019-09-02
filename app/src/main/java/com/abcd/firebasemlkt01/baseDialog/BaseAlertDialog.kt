@@ -1,30 +1,26 @@
-package com.abcd.firebasemlkt01.utils
+package com.abcd.firebasemlkt01.baseDialog
 
 import android.app.AlertDialog
 import android.content.Context
-import android.graphics.Color
 import android.view.Gravity
 import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
-import com.abcd.firebasemlkt01.utils.view.MyPDView
 
-
-open class MyProgressDialog(context: Context) : ProgressBar(context), MyPDView.MyPDUIView {
+open class BaseAlertDialog(context: Context) : BaseAlertDialogView.UIView, ProgressBar(context) {
 
     private val llPadding = 30
     private val ll: LinearLayout = LinearLayout(context)
     private val tvText: TextView = TextView(context)
     private val builder = AlertDialog.Builder(context)
     lateinit var llParam: LinearLayout.LayoutParams
-    lateinit var dialog: AlertDialog
 
     init {
-        setProgressDialog()
+        setAlertDialog()
     }
 
-    private fun setProgressDialog() {
+    private fun setAlertDialog() {
 
         ll.orientation = LinearLayout.HORIZONTAL
         ll.setPadding(llPadding, llPadding, llPadding, llPadding)
@@ -38,23 +34,22 @@ open class MyProgressDialog(context: Context) : ProgressBar(context), MyPDView.M
         this.isIndeterminate = true
         this.setPadding(0, 0, llPadding, 0)
 
-        tvText.text = "Loading ..."
-        tvText.setTextColor(Color.parseColor("#000000"))
-        tvText.textSize = 20f
         tvText.layoutParams = llParam
 
         ll.addView(this)
-        ll.addView(tvText)
 
-        builder.setCancelable(true)
-        builder.setView(ll)
-        dialog = builder.create()
     }
 
-    override fun showDialog() {
+
+    override fun dismissDialog(dialog: AlertDialog) {
+        if (dialog.window != null) {
+            dialog.dismiss()
+        }
+    }
+
+    override fun showDialog(dialog: AlertDialog) {
         dialog.show()
-        val window = dialog.window
-        if (window != null) {
+        if (dialog.window != null) {
             val layoutParams = WindowManager.LayoutParams()
             layoutParams.copyFrom(dialog.window.attributes)
             layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT
@@ -63,7 +58,26 @@ open class MyProgressDialog(context: Context) : ProgressBar(context), MyPDView.M
         }
     }
 
-    override fun dismissDialog() {
-        dialog.dismiss()
+    override fun message(message: String) {
+        tvText.text = message
+    }
+
+    override fun textColor(color: Int) {
+        tvText.setTextColor(color)
+    }
+
+    override fun textSize(txtsize: Float) {
+        tvText.textSize = txtsize
+    }
+
+    override fun alertCancellable(cancel: Boolean) {
+        builder.setCancelable(cancel)
+    }
+
+    override fun createBuilder(): AlertDialog {
+        ll.addView(tvText)
+        builder.setView(ll)
+
+        return builder.create()
     }
 }
