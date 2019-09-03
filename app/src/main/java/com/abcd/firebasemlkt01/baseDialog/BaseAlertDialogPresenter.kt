@@ -2,28 +2,31 @@ package com.abcd.firebasemlkt01.baseDialog
 
 import android.content.Context
 
-class BaseAlertDialogPresenter(context: Context) : BaseAlertDialog(context), BaseAlertDialogView.PresenterView {
+class BaseAlertDialogPresenter(context: Context) : BaseAlertDialogView.PresenterView {
+
+    private val baseAlert: BaseAlertDialog = BaseAlertDialog(context)
+
 
     override fun settingDialogVisibility(flag: Boolean) {
         when {
-            flag -> super.showDialog(super.createBuilder())
-            else -> super.dismissDialog(super.createBuilder())
+            flag -> baseAlert.showDialog(baseAlert.createBuilder())
+            else -> baseAlert.dismissDialog(baseAlert.createBuilder())
         }
     }
 
     override fun setMessage(message: String) {
-        super.message(message)
+        baseAlert.message(message)
     }
 
     override fun setTextColor(color: Int) {
-        super.textColor(color)
+        baseAlert.textColor(color)
     }
 
     override fun setTextSize(txtsize: Float) {
-        super.textSize(txtsize)
+        baseAlert.textSize(txtsize)
     }
 
     override fun setAlertCancellable(cancel: Boolean) {
-        super.alertCancellable(cancel)
+        baseAlert.alertCancellable(cancel)
     }
 }
