@@ -3,7 +3,7 @@ package com.abcd.firebasemlkt01.baseDialog
 import android.app.AlertDialog
 import android.graphics.Color
 
-interface BaseAlertDialogView {
+interface BaseDialogView {
 
     interface UIView {
         fun dismissDialog(builder: AlertDialog)
@@ -23,7 +23,7 @@ interface BaseAlertDialogView {
 
     interface PresenterView {
 
-        fun settingDialogVisibility(flag: Boolean)
+        fun setAlertDialog(flag: Boolean)
 
         fun setMessage(message: String = "Loading Image...")
 

@@ -8,7 +8,7 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 
-open class BaseAlertDialog(context: Context) : BaseAlertDialogView.UIView, ProgressBar(context) {
+open class BaseDialogMain(context: Context) : BaseDialogView.UIView, ProgressBar(context) {
 
     private val llPadding = 30
     private val ll: LinearLayout = LinearLayout(context)

@@ -9,9 +9,9 @@ import android.provider.MediaStore
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import com.abcd.firebasemlkt01.R
+import com.abcd.firebasemlkt01.baseDialog.BaseDialogPresenter
 import com.abcd.firebasemlkt01.ui.presenter.MainPresenter
 import com.abcd.firebasemlkt01.ui.view.MainView
-import com.abcd.firebasemlkt01.utils.presenter.MyPDPresenter
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity(), MainView.UIView {
     lateinit var presenter: MainPresenter
     private val CAMERA_REQUEST: Int = 1001
 
-    lateinit var progressPresenter: MyPDPresenter
+    lateinit var baseDialog: BaseDialogPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity(), MainView.UIView {
         //Initialize Presenter
         presenter = MainPresenter(this@MainActivity)
         //Initialize Progress Presenter
-        progressPresenter = MyPDPresenter(this@MainActivity)
+        baseDialog = BaseDialogPresenter(this@MainActivity)
         //Calling Permission
         settingPermissions()
         //Setting Listeners
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity(), MainView.UIView {
             return
         }
 
-        progressPresenter.settingDialog(true)
+        baseDialog.setAlertDialog(true)
 
         capturedImage.setImageBitmap(bitmap)
         presenter.onGettingFirebaseVisionImage(bitmap)
@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity(), MainView.UIView {
     override fun settingExtractTextFRImage(imageTxt: String) {
         imgTxtView.text = imageTxt
 
-        progressPresenter.settingDialog(false)
+        baseDialog.setAlertDialog(false)
     }
 
     override fun settingFirebaseVisionImage(bitmap: Bitmap) {
