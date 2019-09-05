@@ -11,6 +11,7 @@ class BaseDialogPresenter(context: Context) : BaseDialogView.PresenterView {
         setTextColor()
         setTextSize()
         setAlertCancellable(false)
+        setPadding()
     }
 
     override fun setAlertDialog(flag: Boolean) {

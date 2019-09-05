@@ -35,7 +35,7 @@ interface BaseDialogView {
 
         fun setAlertCancellable(cancel: Boolean = true)
 
-        fun setPadding(left: Int = 30, top: Int = 30, right: Int = 30, bottom: Int = 30)
+        fun setPadding(left: Int = 0, top: Int = 30, right: Int = 30, bottom: Int = 30)
 
     }
 

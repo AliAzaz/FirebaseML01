@@ -32,7 +32,8 @@ open class BaseDialogMain(context: Context) : BaseDialogView.UIView, ProgressBar
         ll.layoutParams = llParam
 
         this.isIndeterminate = true
-        this.setPadding(0, 0, 30, 0)
+
+//        this.setPadding(30, 30, 30, 30)
 
         tvText.layoutParams = llParam
 
@@ -77,7 +78,7 @@ open class BaseDialogMain(context: Context) : BaseDialogView.UIView, ProgressBar
     }
 
     override fun padding(left: Int, top: Int, right: Int, bottom: Int) {
-        ll.setPadding(left, top, right, bottom)
+        this.setPadding(left, top, right, bottom)
     }
 
     private fun setViewToBuilder() {
