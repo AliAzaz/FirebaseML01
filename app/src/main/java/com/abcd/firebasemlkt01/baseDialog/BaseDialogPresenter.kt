@@ -6,10 +6,17 @@ class BaseDialogPresenter(context: Context) : BaseDialogView.PresenterView {
 
     private val baseDialogMain: BaseDialogMain = BaseDialogMain(context)
 
+    init {
+        setMessage()
+        setTextColor()
+        setTextSize()
+        setAlertCancellable(false)
+    }
+
     override fun setAlertDialog(flag: Boolean) {
         when {
-            flag -> baseDialogMain.showDialog(baseDialogMain.createBuilder())
-            else -> baseDialogMain.dismissDialog(baseDialogMain.createBuilder())
+            flag -> baseDialogMain.showDialog(baseDialogMain.getAlertBuilder())
+            else -> baseDialogMain.dismissDialog(baseDialogMain.getAlertBuilder())
         }
     }
 
@@ -27,5 +34,9 @@ class BaseDialogPresenter(context: Context) : BaseDialogView.PresenterView {
 
     override fun setAlertCancellable(cancel: Boolean) {
         baseDialogMain.alertCancellable(cancel)
+    }
+
+    override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
+        baseDialogMain.setPadding(left, top, right, bottom)
     }
 }

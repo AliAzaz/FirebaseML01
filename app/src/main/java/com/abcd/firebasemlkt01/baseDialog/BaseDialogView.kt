@@ -18,7 +18,9 @@ interface BaseDialogView {
 
         fun alertCancellable(cancel: Boolean)
 
-        fun createBuilder(): AlertDialog
+        fun getAlertBuilder(): AlertDialog
+
+        fun padding(left: Int, top: Int, right: Int, bottom: Int)
     }
 
     interface PresenterView {
@@ -32,6 +34,8 @@ interface BaseDialogView {
         fun setTextSize(txtsize: Float = 20f)
 
         fun setAlertCancellable(cancel: Boolean = true)
+
+        fun setPadding(left: Int = 30, top: Int = 30, right: Int = 30, bottom: Int = 30)
 
     }
 

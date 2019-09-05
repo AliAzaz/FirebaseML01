@@ -14,7 +14,8 @@ open class BaseDialogMain(context: Context) : BaseDialogView.UIView, ProgressBar
     private val ll: LinearLayout = LinearLayout(context)
     private val tvText: TextView = TextView(context)
     private val builder = AlertDialog.Builder(context)
-    lateinit var llParam: LinearLayout.LayoutParams
+    private lateinit var llParam: LinearLayout.LayoutParams
+    private lateinit var baseDialog: AlertDialog
 
     init {
         setAlertDialog()
@@ -23,7 +24,6 @@ open class BaseDialogMain(context: Context) : BaseDialogView.UIView, ProgressBar
     private fun setAlertDialog() {
 
         ll.orientation = LinearLayout.HORIZONTAL
-        ll.setPadding(llPadding, llPadding, llPadding, llPadding)
         ll.gravity = Gravity.CENTER
         llParam = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -32,19 +32,17 @@ open class BaseDialogMain(context: Context) : BaseDialogView.UIView, ProgressBar
         ll.layoutParams = llParam
 
         this.isIndeterminate = true
-        this.setPadding(0, 0, llPadding, 0)
+        this.setPadding(0, 0, 30, 0)
 
         tvText.layoutParams = llParam
 
-        ll.addView(this)
+        setViewToBuilder()
 
     }
 
 
     override fun dismissDialog(dialog: AlertDialog) {
-        if (dialog.window != null) {
-            dialog.dismiss()
-        }
+        dialog.dismiss()
     }
 
     override fun showDialog(dialog: AlertDialog) {
@@ -74,10 +72,22 @@ open class BaseDialogMain(context: Context) : BaseDialogView.UIView, ProgressBar
         builder.setCancelable(cancel)
     }
 
-    override fun createBuilder(): AlertDialog {
+    override fun getAlertBuilder(): AlertDialog {
+        return baseDialog
+    }
+
+    override fun padding(left: Int, top: Int, right: Int, bottom: Int) {
+        ll.setPadding(left, top, right, bottom)
+    }
+
+    private fun setViewToBuilder() {
+
+        if (ll.parent != null) ll.removeAllViews()
+
+        ll.addView(this)
         ll.addView(tvText)
         builder.setView(ll)
 
-        return builder.create()
+        baseDialog = builder.create()
     }
 }

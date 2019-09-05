@@ -4,6 +4,7 @@ import android.Manifest.permission
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v7.app.AppCompatActivity
@@ -17,6 +18,7 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
 import com.nabinbhandari.android.permissions.PermissionHandler
 import com.nabinbhandari.android.permissions.Permissions
+import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -65,14 +67,15 @@ class MainActivity : AppCompatActivity(), MainView.UIView {
         var fbVisionTxtDetect: FirebaseVisionTextRecognizer = FirebaseVision.getInstance().onDeviceTextRecognizer
         fbVisionTxtDetect.processImage(fbVisionImg)
             .addOnSuccessListener {
-                presenter.onGettingExtractTextFRImage(if (it.equals("")) "No Found any text!!" else it.text)
+                presenter.onGettingExtractTextFRImage(if (it.equals("")) "Not Found any text!!" else it.text)
             }
             .addOnFailureListener {
                 when {
-                    it.printStackTrace().equals("Waiting for the text recognition model to be downloaded. Please wait.") ->
+                    it.printStackTrace().equals("Waiting for the text recognition model to be downloaded. Please wait.") -> {
                         settingFirebaseVisionImage(
                             bitmap
                         )
+                    }
                     else -> presenter.onGettingExtractTextFRImage("Error: " + it.printStackTrace())
                 }
 
@@ -102,7 +105,23 @@ class MainActivity : AppCompatActivity(), MainView.UIView {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode != CAMERA_REQUEST && resultCode != Activity.RESULT_OK) return
-        val imageBitmap = data?.extras?.get("data") as? Bitmap
-        presenter.onGettingBitmap(imageBitmap)
+
+        when (requestCode) {
+
+            CAMERA_REQUEST -> CropImage.activity(data!!.data)
+                .setBackgroundColor(Color.parseColor("#80FFFFA6"))
+                .setActivityTitle("Cropping Activity")
+                .start(this)
+
+            CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE ->
+                presenter.onGettingBitmap(
+                    MediaStore.Images.Media.getBitmap(
+                        this.contentResolver,
+                        CropImage.getActivityResult(data).uri
+                    )
+                )
+
+        }
+
     }
 }
