@@ -14,7 +14,7 @@ class BaseDialogPresenter(context: Context) : BaseDialogView.PresenterView {
         setPadding()
     }
 
-    override fun setAlertDialog(flag: Boolean) {
+    override fun setAlertDialogView(flag: Boolean) {
         when {
             flag -> baseDialogMain.showDialog(baseDialogMain.getAlertBuilder())
             else -> baseDialogMain.dismissDialog(baseDialogMain.getAlertBuilder())

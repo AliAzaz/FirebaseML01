@@ -25,7 +25,7 @@ interface BaseDialogView {
 
     interface PresenterView {
 
-        fun setAlertDialog(flag: Boolean)
+        fun setAlertDialogView(flag: Boolean)
 
         fun setMessage(message: String = "Loading Image...")
 

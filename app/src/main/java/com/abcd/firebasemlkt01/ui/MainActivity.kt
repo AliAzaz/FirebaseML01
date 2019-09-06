@@ -49,16 +49,17 @@ class MainActivity : AppCompatActivity(), MainView.UIView {
             return
         }
 
-        baseDialog.setAlertDialog(true)
+        baseDialog.setAlertDialogView(true)
 
         capturedImage.setImageBitmap(bitmap)
+        capturedImage.isShowCropOverlay = false
         presenter.onGettingFirebaseVisionImage(bitmap)
     }
 
     override fun settingExtractTextFRImage(imageTxt: String) {
         imgTxtView.text = imageTxt
 
-        baseDialog.setAlertDialog(false)
+        baseDialog.setAlertDialogView(false)
     }
 
     override fun settingFirebaseVisionImage(bitmap: Bitmap) {
