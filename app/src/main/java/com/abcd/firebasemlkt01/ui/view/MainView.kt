@@ -1,16 +1,19 @@
 package com.abcd.firebasemlkt01.ui.view
 
 import android.graphics.Bitmap
+import com.google.firebase.ml.vision.text.FirebaseVisionText
 
 interface MainView {
 
     interface UIView {
 
-        fun settingBitmap(bitmap: Bitmap?)
+        fun setBitmap(bitmap: Bitmap)
 
-        fun settingExtractTextFRImage(imageTxt: String = "")
+        fun setVisionText(visionText: FirebaseVisionText)
 
-        fun settingFirebaseVisionImage(bitmap: Bitmap)
+        fun setVisionImage(bitmap: Bitmap)
+
+        fun setLabelOnImage(blocks: List<FirebaseVisionText.TextBlock>)
     }
 
     interface PresenterView {
@@ -18,11 +21,13 @@ interface MainView {
 
         fun grantPermission(): Boolean
 
-        fun onGettingBitmap(bitmap: Bitmap?)
+        fun onGettingBitmap(bitmap: Bitmap)
 
-        fun onGettingExtractTextFRImage(imageTxt: String)
+        fun onGettingVisionText(visionText: FirebaseVisionText)
 
-        fun onGettingFirebaseVisionImage(bitmap: Bitmap)
+        fun onGettingVisionImage(bitmap: Bitmap)
+
+        fun onGettingLabelFromImage(blocks: List<FirebaseVisionText.TextBlock>)
     }
 
     interface ModelView

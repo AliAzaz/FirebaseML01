@@ -40,6 +40,7 @@ dependencies {
     implementation 'com.nabinbhandari.android:permissions:3.8'
     //Firebase
     implementation 'com.google.firebase:firebase-ml-vision:18.0.1'
+    implementation 'com.google.firebase:firebase-ml-vision-image-label-model:17.0.2'
     //Image Cropping
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.0'
 }
