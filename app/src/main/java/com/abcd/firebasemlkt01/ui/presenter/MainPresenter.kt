@@ -25,15 +25,15 @@ class MainPresenter(private val mainActivity: MainActivity) : MainView.Presenter
         mainActivity.setBitmap(bitmap)
     }
 
-    override fun onGettingVisionText(visionText: FirebaseVisionText) {
-        mainActivity.setVisionText(visionText)
+    override fun onGettingVisionText(bitmap: Bitmap, visionText: FirebaseVisionText) {
+        mainActivity.setVisionText(bitmap, visionText)
     }
 
     override fun onGettingVisionImage(bitmap: Bitmap) {
         mainActivity.setVisionImage(bitmap)
     }
 
-    override fun onGettingLabelFromImage(blocks: List<FirebaseVisionText.TextBlock>) {
-        mainActivity.setLabelOnImage(blocks)
+    override fun onGettingLabelFromImage(bitmap: Bitmap, blocks: List<FirebaseVisionText.TextBlock>) {
+        mainActivity.setLabelOnImage(bitmap, blocks)
     }
 }

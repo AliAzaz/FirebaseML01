@@ -9,11 +9,11 @@ interface MainView {
 
         fun setBitmap(bitmap: Bitmap)
 
-        fun setVisionText(visionText: FirebaseVisionText)
+        fun setVisionText(bitmap: Bitmap, visionText: FirebaseVisionText)
 
-        fun setVisionImage(bitmap: Bitmap)
+        fun setVisionImage(bitmap: Bitmap?)
 
-        fun setLabelOnImage(blocks: List<FirebaseVisionText.TextBlock>)
+        fun setLabelOnImage(bitmap: Bitmap, blocks: List<FirebaseVisionText.TextBlock>)
     }
 
     interface PresenterView {
@@ -23,11 +23,11 @@ interface MainView {
 
         fun onGettingBitmap(bitmap: Bitmap)
 
-        fun onGettingVisionText(visionText: FirebaseVisionText)
+        fun onGettingVisionText(bitmap: Bitmap, visionText: FirebaseVisionText)
 
         fun onGettingVisionImage(bitmap: Bitmap)
 
-        fun onGettingLabelFromImage(blocks: List<FirebaseVisionText.TextBlock>)
+        fun onGettingLabelFromImage(bitmap: Bitmap, blocks: List<FirebaseVisionText.TextBlock>)
     }
 
     interface ModelView

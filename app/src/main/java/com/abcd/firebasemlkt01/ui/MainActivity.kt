@@ -4,7 +4,9 @@ import android.Manifest.permission
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Paint
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v7.app.AppCompatActivity
@@ -37,6 +39,7 @@ class MainActivity : AppCompatActivity(), MainView.UIView {
         presenter = MainPresenter(this@MainActivity)
         //Initialize Progress Presenter
         baseDialog = BaseDialogPresenter(this@MainActivity)
+
         //Calling Permission
         settingPermissions()
         //Setting Listeners
@@ -52,7 +55,7 @@ class MainActivity : AppCompatActivity(), MainView.UIView {
         presenter.onGettingVisionImage(bitmap)
     }
 
-    override fun setVisionText(visionTxt: FirebaseVisionText) {
+    override fun setVisionText(bitmap: Bitmap, visionTxt: FirebaseVisionText) {
 
         val blocks: List<FirebaseVisionText.TextBlock> = visionTxt.textBlocks
 
@@ -66,21 +69,39 @@ class MainActivity : AppCompatActivity(), MainView.UIView {
             return
         }
 
-        presenter.onGettingLabelFromImage(blocks)
+        presenter.onGettingLabelFromImage(bitmap, blocks)
 
     }
 
-    override fun setLabelOnImage(blocks: List<FirebaseVisionText.TextBlock>) {
+    override fun setLabelOnImage(bitmap: Bitmap, blocks: List<FirebaseVisionText.TextBlock>) {
+        val canvas = Canvas(bitmap)
+        val graphics = getGraphics()
+
+        for (i in blocks.indices) {
+            val lines: List<FirebaseVisionText.Line> = blocks[i].lines
+            for (j in lines.indices) {
+                val elements: List<FirebaseVisionText.Element> = lines[j].elements
+                for (k in elements.indices) {
+                    canvas.drawRect(elements[k].boundingBox, graphics.first)
+                }
+            }
+        }
 
     }
 
-    override fun setVisionImage(bitmap: Bitmap) {
+    override fun setVisionImage(bitmap: Bitmap?) {
+
+        if (bitmap == null) {
+            Toast.makeText(this, "No Image Selected!!", Toast.LENGTH_SHORT).show()
+            baseDialog.setAlertDialogView(false)
+            return
+        }
 
         val fbVisionImg: FirebaseVisionImage = FirebaseVisionImage.fromBitmap(bitmap)
         var fbVisionTxtDetect: FirebaseVisionTextRecognizer = FirebaseVision.getInstance().onDeviceTextRecognizer
         fbVisionTxtDetect.processImage(fbVisionImg)
             .addOnSuccessListener {
-                presenter.onGettingVisionText(it)
+                presenter.onGettingVisionText(bitmap, it)
             }
             .addOnFailureListener {
                 when {
@@ -139,6 +160,19 @@ class MainActivity : AppCompatActivity(), MainView.UIView {
             }
             startActivityForResult(Intent(MediaStore.ACTION_IMAGE_CAPTURE), CAMERA_REQUEST)
         }
+    }
+
+    private fun getGraphics(): Pair<Paint, Paint> {
+        val rectPaint = Paint()
+        rectPaint.color = Color.RED
+        rectPaint.style = Paint.Style.STROKE
+        rectPaint.strokeWidth = 4F
+
+        val textPaint = Paint()
+        textPaint.color = Color.RED
+        textPaint.textSize = 40F
+
+        return Pair(rectPaint, textPaint)
     }
 
 }
