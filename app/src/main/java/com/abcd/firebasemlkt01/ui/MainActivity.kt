@@ -18,7 +18,6 @@ import com.abcd.firebasemlkt01.ui.view.MainView
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.text.FirebaseVisionText
-import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
 import com.nabinbhandari.android.permissions.PermissionHandler
 import com.nabinbhandari.android.permissions.Permissions
 import com.theartofdev.edmodo.cropper.CropImage
@@ -27,7 +26,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), MainView.UIView {
 
-    private val CAMERA_REQUEST: Int = 1001
+    private val CAMERA_REQUEST = 1001
     private lateinit var presenter: MainPresenter
     private lateinit var baseDialog: BaseDialogPresenter
 
@@ -46,18 +45,19 @@ class MainActivity : AppCompatActivity(), MainView.UIView {
         settingListeners()
     }
 
-    override fun setBitmap(bitmap: Bitmap) {
+    override fun setBitmapToImageView(bitmap: Bitmap) {
 
         baseDialog.setAlertDialogView(true)
 
         capturedImage.setImageBitmap(bitmap)
         capturedImage.isShowCropOverlay = false
+
         presenter.onGettingVisionImage(bitmap)
     }
 
-    override fun setVisionText(bitmap: Bitmap, visionTxt: FirebaseVisionText) {
+    override fun setVisionAnalysisText(bitmap: Bitmap, visionTxt: FirebaseVisionText) {
 
-        val blocks: List<FirebaseVisionText.TextBlock> = visionTxt.textBlocks
+        val blocks = visionTxt.textBlocks
 
         imgTxtView.text = when {
             blocks.isEmpty() -> "No Text Found!!"
@@ -74,7 +74,8 @@ class MainActivity : AppCompatActivity(), MainView.UIView {
     }
 
     override fun setLabelOnImage(bitmap: Bitmap, blocks: List<FirebaseVisionText.TextBlock>) {
-        val canvas = Canvas(bitmap)
+        val mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
+        val canvas = Canvas(mutableBitmap)
         val graphics = getGraphics()
 
         for (i in blocks.indices) {
@@ -87,6 +88,9 @@ class MainActivity : AppCompatActivity(), MainView.UIView {
             }
         }
 
+        capturedImage.setImageBitmap(mutableBitmap)
+        baseDialog.setAlertDialogView(false)
+
     }
 
     override fun setVisionImage(bitmap: Bitmap?) {
@@ -97,11 +101,11 @@ class MainActivity : AppCompatActivity(), MainView.UIView {
             return
         }
 
-        val fbVisionImg: FirebaseVisionImage = FirebaseVisionImage.fromBitmap(bitmap)
-        var fbVisionTxtDetect: FirebaseVisionTextRecognizer = FirebaseVision.getInstance().onDeviceTextRecognizer
+        val fbVisionImg = FirebaseVisionImage.fromBitmap(bitmap)
+        val fbVisionTxtDetect = FirebaseVision.getInstance().onDeviceTextRecognizer
         fbVisionTxtDetect.processImage(fbVisionImg)
             .addOnSuccessListener {
-                presenter.onGettingVisionText(bitmap, it)
+                presenter.onGettingVisionAnalysisText(bitmap, it)
             }
             .addOnFailureListener {
                 when {
@@ -132,7 +136,7 @@ class MainActivity : AppCompatActivity(), MainView.UIView {
                 .start(this)
 
             CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE ->
-                presenter.onGettingBitmap(
+                presenter.onGettingBitmapFromImageView(
                     MediaStore.Images.Media.getBitmap(
                         this.contentResolver,
                         CropImage.getActivityResult(data).uri

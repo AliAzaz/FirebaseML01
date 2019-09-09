@@ -21,12 +21,12 @@ class MainPresenter(private val mainActivity: MainActivity) : MainView.Presenter
         return permissionFlag
     }
 
-    override fun onGettingBitmap(bitmap: Bitmap) {
-        mainActivity.setBitmap(bitmap)
+    override fun onGettingBitmapFromImageView(bitmap: Bitmap) {
+        mainActivity.setBitmapToImageView(bitmap)
     }
 
-    override fun onGettingVisionText(bitmap: Bitmap, visionText: FirebaseVisionText) {
-        mainActivity.setVisionText(bitmap, visionText)
+    override fun onGettingVisionAnalysisText(bitmap: Bitmap, visionText: FirebaseVisionText) {
+        mainActivity.setVisionAnalysisText(bitmap, visionText)
     }
 
     override fun onGettingVisionImage(bitmap: Bitmap) {

@@ -7,9 +7,9 @@ interface MainView {
 
     interface UIView {
 
-        fun setBitmap(bitmap: Bitmap)
+        fun setBitmapToImageView(bitmap: Bitmap)
 
-        fun setVisionText(bitmap: Bitmap, visionText: FirebaseVisionText)
+        fun setVisionAnalysisText(bitmap: Bitmap, visionText: FirebaseVisionText)
 
         fun setVisionImage(bitmap: Bitmap?)
 
@@ -21,9 +21,9 @@ interface MainView {
 
         fun grantPermission(): Boolean
 
-        fun onGettingBitmap(bitmap: Bitmap)
+        fun onGettingBitmapFromImageView(bitmap: Bitmap)
 
-        fun onGettingVisionText(bitmap: Bitmap, visionText: FirebaseVisionText)
+        fun onGettingVisionAnalysisText(bitmap: Bitmap, visionText: FirebaseVisionText)
 
         fun onGettingVisionImage(bitmap: Bitmap)
 
