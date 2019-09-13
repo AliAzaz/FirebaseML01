@@ -1,33 +1,33 @@
 package com.abcd.firebasemlkt01.ui.view
 
 import android.graphics.Bitmap
-import com.google.firebase.ml.vision.text.FirebaseVisionText
+import android.net.Uri
 
 interface MainView {
 
     interface UIView {
 
-        fun setBitmapToImageView(bitmap: Bitmap)
+        fun setTextView(analyzedText: String)
 
-        fun setVisionAnalysisText(bitmap: Bitmap, visionText: FirebaseVisionText)
+        fun setBitmapOnImageView(bitmap: Bitmap)
 
-        fun setVisionImage(bitmap: Bitmap?)
+        fun setToast(message: String)
 
-        fun setLabelOnImage(bitmap: Bitmap, blocks: List<FirebaseVisionText.TextBlock>)
+        fun showDialog()
+
+        fun dismissDialog()
+
     }
 
     interface PresenterView {
-        fun onGettingPermissions(flag: Boolean = false)
 
         fun grantPermission(): Boolean
 
-        fun onGettingBitmapFromImageView(bitmap: Bitmap)
+        fun onGettingBitmapForImageView(bitmap: Bitmap)
 
-        fun onGettingVisionAnalysisText(bitmap: Bitmap, visionText: FirebaseVisionText)
+        fun onCaptureClicked(CAMERA_REQUEST: Int)
 
-        fun onGettingVisionImage(bitmap: Bitmap)
-
-        fun onGettingLabelFromImage(bitmap: Bitmap, blocks: List<FirebaseVisionText.TextBlock>)
+        fun onGettingBitmapURIForCrop(bitmapURI: Uri)
     }
 
     interface ModelView

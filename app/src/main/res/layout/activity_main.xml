@@ -15,7 +15,7 @@
 				android:id="@+id/btnOpenCamera"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="Open Camera"
+				android:text="Capture Image"
 				app:layout_constraintEnd_toEndOf="parent"
 				android:layout_marginEnd="8dp"
 				app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +26,8 @@
 		
 		<com.theartofdev.edmodo.cropper.CropImageView
 				android:layout_width="match_parent"
-				android:layout_height="370dp"
+				android:layout_height="300dp"
+				app:cropShowCropOverlay="false"
 				android:id="@+id/capturedImage"
 				android:layout_marginTop="8dp"
 				app:layout_constraintTop_toTopOf="parent"
