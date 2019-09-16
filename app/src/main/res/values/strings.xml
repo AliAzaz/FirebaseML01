@@ -2,5 +2,7 @@
     <string name="app_name">FirebaseMLKT01</string>
     
     <string name="denied">Permission Denied!!</string>
+    <string name="cropping">Cropping Activity</string>
+    <string name="model_download_warning">Waiting for the text recognition model to be downloaded. Please wait.</string>
     
 </resources>

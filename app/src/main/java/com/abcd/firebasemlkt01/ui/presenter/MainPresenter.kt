@@ -48,8 +48,8 @@ class MainPresenter(private val mainActivity: MainActivity) : MainView.Presenter
 
     override fun onGettingBitmapURIForCrop(bitmapURI: Uri) {
         CropImage.activity(bitmapURI)
-            .setBackgroundColor(Color.parseColor("#80FFFFA6"))
-            .setActivityTitle("Cropping Activity")
+            .setBackgroundColor(R.color.crop_shade)
+            .setActivityTitle(R.string.cropping.toString())
             .start(mainActivity)
     }
 
@@ -83,7 +83,7 @@ class MainPresenter(private val mainActivity: MainActivity) : MainView.Presenter
             }
             .addOnFailureListener {
                 when {
-                    it.printStackTrace().equals("Waiting for the text recognition model to be downloaded. Please wait.") -> {
+                    it.printStackTrace().toString().equals(R.string.model_download_warning.toString()) -> {
                         onGettingVisionBitmapAnalysis(bitmap)
                     }
                     else -> {
